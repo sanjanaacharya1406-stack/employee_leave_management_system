@@ -1,0 +1,12 @@
+{% extends "base.html" %}{% block title %}Manager Dashboard{% endblock %}
+{% block content %}
+<h1>Manager Dashboard</h1><p class="muted">Review employee leave applications.</p>
+<div class="table-wrap"><table><thead><tr><th>Employee</th><th>Leave type</th><th>Dates</th><th>Days</th><th>Reason</th><th>Status</th><th>Decision</th></tr></thead><tbody>
+{% for r in requests %}
+<tr><td>{{ r.employee_name }}<small>{{ r.email }}</small></td><td>{{ r.leave_type }}</td><td>{{ r.start_date }} to {{ r.end_date }}</td><td>{{ r.days }}</td><td>{{ r.reason }}</td><td><span class="status {{ r.status|lower }}">{{ r.status }}</span></td>
+<td>{% if r.status == 'Pending' %}
+<form class="inline-form" method="post" action="{{ url_for('manager_action', request_id=r.id) }}"><button class="small" name="action" value="Approved">Approve</button><button class="small danger-btn" name="action" value="Rejected">Reject</button></form>
+{% else %}—{% endif %}</td></tr>
+{% else %}<tr><td colspan="7">No applications have been submitted.</td></tr>{% endfor %}
+</tbody></table></div>
+{% endblock %}

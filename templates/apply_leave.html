@@ -1,0 +1,12 @@
+{% extends "base.html" %}{% block title %}Apply for Leave{% endblock %}
+{% block content %}
+<section class="form-card"><h1>Apply for leave</h1>
+<p class="muted">Your current balances: {% for kind, amount in balances.items() %}{{ kind }}: {{ amount }} days{% if not loop.last %} · {% endif %}{% endfor %}</p>
+<form method="post">
+<label>Leave type</label><select name="leave_type" required>{% for kind in balances.keys() %}<option value="{{ kind }}">{{ kind }}</option>{% endfor %}</select>
+<div class="two-col"><div><label>Start date</label><input type="date" name="start_date" min="{{ today }}" required></div>
+<div><label>End date</label><input type="date" name="end_date" min="{{ today }}" required></div></div>
+<label>Reason</label><textarea name="reason" rows="4" required></textarea>
+<button type="submit">Submit application</button><a class="cancel-link" href="{{ url_for('dashboard') }}">Back</a>
+</form></section>
+{% endblock %}
